@@ -7,7 +7,6 @@ const BRAND = {
   blueText: '#2a5d93',
   text: '#17304f',
   soft: '#eef5fc',
-  page: '#f6f9fd',
   white: '#ffffff',
   line: '#d8e4f0',
   softGreen: '#eef8f1',
@@ -54,12 +53,12 @@ const SCENES = [
     id: 2,
     text: 'У тебе раптом повністю вільний день. Немає уроків, термінових справ і ніхто нічого не просить. Що тобі реально хочеться робити?',
     options: [
-      { text: 'Щось створити: візуал, текст, ідею.', type: 'A' },
+      { text: 'Щось зробити руками або протестити.', type: 'R' },
       { text: 'Розібрати нову тему, яка давно цікавить.', type: 'I' },
+      { text: 'Щось створити: візуал, текст, ідею.', type: 'A' },
       { text: 'Поспілкуватися з людьми або кудись вибратись.', type: 'S' },
       { text: 'Придумати щось і запустити.', type: 'E' },
       { text: 'Навести порядок у своїх справах.', type: 'C' },
-      { text: 'Щось зробити руками або протестити.', type: 'R' },
     ],
   },
   {
@@ -132,6 +131,102 @@ const SCENES = [
       { text: 'є люди і жива взаємодія', type: 'S' },
       { text: 'можна впливати і вести', type: 'E' },
       { text: 'є система, порядок і ясність', type: 'C' },
+    ],
+  },
+  {
+    id: 9,
+    text: 'Тобі потрібно виступити перед класом. Що в цій ситуації для тебе найбільш природно?',
+    options: [
+      { text: 'Показати щось наочно або на прикладі.', type: 'R' },
+      { text: 'Розкласти тему логічно.', type: 'I' },
+      { text: 'Зробити подачу цікавою і небанальною.', type: 'A' },
+      { text: 'Знайти контакт із класом.', type: 'S' },
+      { text: 'Виступити впевнено і вести увагу.', type: 'E' },
+      { text: 'Підготувати чітку структуру без хаосу.', type: 'C' },
+    ],
+  },
+  {
+    id: 10,
+    text: 'Ти потрапив(ла) в нову школу, табір або компанію. Що робиш спочатку?',
+    options: [
+      { text: 'Дивлюсь, як тут усе влаштовано.', type: 'I' },
+      { text: 'Починаю розмовляти і знайомитись.', type: 'S' },
+      { text: 'Беру ініціативу, якщо бачу шанс.', type: 'E' },
+      { text: 'Швидко знаходжу, чим себе зайняти.', type: 'R' },
+      { text: 'Помічаю атмосферу і стиль людей.', type: 'A' },
+      { text: 'Відстежую правила і рамки.', type: 'C' },
+    ],
+  },
+  {
+    id: 11,
+    text: 'Ти старався(лась), але вийшло не так, як хотілося. Що далі?',
+    options: [
+      { text: 'Пробую ще раз, одразу в дії.', type: 'R' },
+      { text: 'Розбираю, де саме була помилка.', type: 'I' },
+      { text: 'Шукаю інший спосіб або подачу.', type: 'A' },
+      { text: 'Можу порадитись із кимось.', type: 'S' },
+      { text: 'Збираюсь і йду далі без довгого зависання.', type: 'E' },
+      { text: 'Роблю висновки і міняю підхід по кроках.', type: 'C' },
+    ],
+  },
+  {
+    id: 12,
+    text: 'У школі оголосили нову активність або конкурс. Що тебе може реально зачепити?',
+    options: [
+      { text: 'Де треба щось робити руками або запускати.', type: 'R' },
+      { text: 'Де треба розібрати складну тему.', type: 'I' },
+      { text: 'Де можна придумати щось креативне.', type: 'A' },
+      { text: 'Де є люди, команда і спільна мета.', type: 'S' },
+      { text: 'Де можна проявитись і вплинути.', type: 'E' },
+      { text: 'Де є чіткі правила і хороша система.', type: 'C' },
+    ],
+  },
+  {
+    id: 13,
+    text: 'Якщо у вас у команді всі трохи розгублені, яка роль найчастіше сама приходить до тебе?',
+    options: [
+      { text: 'Той, хто бере на себе шмат роботи.', type: 'R' },
+      { text: 'Той, хто розуміє, у чому проблема.', type: 'I' },
+      { text: 'Той, хто придумує, як це подати краще.', type: 'A' },
+      { text: 'Той, хто підтримує атмосферу і людей.', type: 'S' },
+      { text: 'Той, хто підтягує всіх і запускає рух.', type: 'E' },
+      { text: 'Той, хто збирає все в порядок.', type: 'C' },
+    ],
+  },
+  {
+    id: 14,
+    text: 'Що тебе швидше втомлює?',
+    options: [
+      { text: 'Довго сидіти без дії.', type: 'R' },
+      { text: 'Поверхневість і тупа метушня.', type: 'I' },
+      { text: 'Суха подача без ідей і смаку.', type: 'A' },
+      { text: 'Холодні люди і повна відстороненість.', type: 'S' },
+      { text: 'Коли все стоїть на місці і ніхто не рухається.', type: 'E' },
+      { text: 'Безлад і неясність.', type: 'C' },
+    ],
+  },
+  {
+    id: 15,
+    text: 'Уяви, що тобі дали шанс спробувати одну міні-практику на день. Що ти обереш?',
+    options: [
+      { text: 'Щось зібрати, протестити, зробити.', type: 'R' },
+      { text: 'Розв’язати складну задачу.', type: 'I' },
+      { text: 'Створити візуал, текст або ідею.', type: 'A' },
+      { text: 'Допомогти комусь розібратись.', type: 'S' },
+      { text: 'Запустити маленький проєкт.', type: 'E' },
+      { text: 'Скласти систему або план.', type: 'C' },
+    ],
+  },
+  {
+    id: 16,
+    text: 'Коли ти думаєш про майбутню професію, що для тебе реально важливо відчувати всередині?',
+    options: [
+      { text: 'Що я роблю щось реальне і корисне.', type: 'R' },
+      { text: 'Що я розумію, як це влаштовано.', type: 'I' },
+      { text: 'Що я можу проявляти себе.', type: 'A' },
+      { text: 'Що я потрібний(а) людям.', type: 'S' },
+      { text: 'Що я впливаю на результат.', type: 'E' },
+      { text: 'Що тут є ясність і опора.', type: 'C' },
     ],
   },
 ]
@@ -268,9 +363,7 @@ const SPECIALTIES = [
 function calculateScores(answers) {
   const base = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
   answers.forEach((a) => {
-    if (a?.type && base[a.type] !== undefined) {
-      base[a.type] += 1
-    }
+    if (a?.type && base[a.type] !== undefined) base[a.type] += 1
   })
   return base
 }
@@ -280,18 +373,13 @@ function buildHybridCode(scores) {
   const first = sorted[0]
   const second = sorted[1]
   const third = sorted[2]
-
   if (!first || !second) return ''
-
   const secondScore = second[1]
   const thirdScore = third?.[1] ?? 0
   const includeThird =
     secondScore > 0 &&
     Math.abs(secondScore - thirdScore) / secondScore <= 0.15
-
-  return includeThird
-    ? `${first[0]}${second[0]}${third[0]}`
-    : `${first[0]}${second[0]}`
+  return includeThird ? `${first[0]}${second[0]}${third[0]}` : `${first[0]}${second[0]}`
 }
 
 function similarity(codeA, codeB) {
@@ -326,11 +414,9 @@ function resolveProfile(code) {
 function specialityScore(userScores, spec) {
   const totalUser = TYPES.reduce((sum, type) => sum + userScores[type], 0) || 1
   let raw = 0
-
   TYPES.forEach((type) => {
     raw += (userScores[type] / totalUser) * (spec.weights[type] || 0)
   })
-
   return Math.round(raw * 100)
 }
 
@@ -343,7 +429,6 @@ function rankedSpecialties(userScores) {
 
 function groupSpecialties(items) {
   const byGroup = {}
-
   items.forEach((item) => {
     if (!byGroup[item.group]) byGroup[item.group] = []
     byGroup[item.group].push(item)
@@ -351,16 +436,12 @@ function groupSpecialties(items) {
 
   return Object.entries(byGroup)
     .map(([group, list]) => {
-      const avg = Math.round(
-        list.reduce((sum, item) => sum + item.percent, 0) / list.length
-      )
-
+      const avg = Math.round(list.reduce((sum, item) => sum + item.percent, 0) / list.length)
       const label = list
         .sort((a, b) => b.percent - a.percent)
         .slice(0, 3)
         .map((item) => item.title)
         .join(' / ')
-
       return { group, label, percent: avg }
     })
     .sort((a, b) => b.percent - a.percent)
@@ -964,9 +1045,7 @@ function OnboardingScreen({ onSubmit }) {
               fontWeight: 700,
               color: '#fff',
               cursor: ready ? 'pointer' : 'not-allowed',
-              background: ready
-                ? 'linear-gradient(135deg, #0f3b6f, #1b5da0)'
-                : '#cbd5e1',
+              background: ready ? 'linear-gradient(135deg, #0f3b6f, #1b5da0)' : '#cbd5e1',
               width: isMobile ? '100%' : 'auto',
             }}
           >
@@ -993,9 +1072,7 @@ function Progress({ current, total }) {
         }}
       >
         <span>Твоя подорож</span>
-        <span>
-          {current}/{total}
-        </span>
+        <span>{current}/{total}</span>
       </div>
       <div
         style={{
@@ -1414,8 +1491,7 @@ function ResultScreen({ profileCode, scores, profile, ranked, onRestart }) {
                 textAlign: 'left',
               }}
             >
-              Це не ярлик і не вирок. Це твій поточний патерн: як ти думаєш,
-              дієш і в якому середовищі розкриваєшся сильніше.
+              Це не ярлик і не вирок. Це твій поточний патерн: як ти думаєш, дієш і в якому середовищі розкриваєшся сильніше.
             </p>
 
             <p
@@ -1434,9 +1510,7 @@ function ResultScreen({ profileCode, scores, profile, ranked, onRestart }) {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: isMobile
-                  ? 'repeat(2, minmax(0, 1fr))'
-                  : 'repeat(6, minmax(0, 1fr))',
+                gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(6, minmax(0, 1fr))',
                 gap: 10,
               }}
             >
@@ -1527,8 +1601,7 @@ function ResultScreen({ profileCode, scores, profile, ranked, onRestart }) {
                 textAlign: 'left',
               }}
             >
-              Ось кілька кроків, які допоможуть перевірити результат не тільки в теорії,
-              а й у реальному житті.
+              Ось кілька кроків, які допоможуть перевірити результат не тільки в теорії, а й у реальному житті.
             </p>
 
             <div style={{ display: 'grid', gap: 12 }}>
@@ -1654,7 +1727,6 @@ export default function App() {
 
   const handleAnswer = (option) => {
     setAnswers((prev) => [...prev, option])
-
     if (sceneIndex + 1 < SCENES.length) {
       setSceneIndex((prev) => prev + 1)
     } else {
@@ -1670,21 +1742,11 @@ export default function App() {
 
   return (
     <AnimatePresence mode="wait">
-      {stage === 'start' && (
-        <StartScreen key="start" onStart={() => setStage('intro')} />
-      )}
-
-      {stage === 'intro' && (
-        <IntroScreen key="intro" onNext={() => setStage('onboarding')} />
-      )}
-
+      {stage === 'start' && <StartScreen key="start" onStart={() => setStage('intro')} />}
+      {stage === 'intro' && <IntroScreen key="intro" onNext={() => setStage('onboarding')} />}
       {stage === 'onboarding' && (
-        <OnboardingScreen
-          key="onboarding"
-          onSubmit={() => setStage('scenes')}
-        />
+        <OnboardingScreen key="onboarding" onSubmit={() => setStage('scenes')} />
       )}
-
       {stage === 'scenes' && (
         <SceneScreen
           key={`scene-${sceneIndex}`}
@@ -1694,14 +1756,9 @@ export default function App() {
           onAnswer={handleAnswer}
         />
       )}
-
       {stage === 'analysis' && (
-        <AnalysisScreen
-          key="analysis"
-          onDone={() => setStage('result')}
-        />
+        <AnalysisScreen key="analysis" onDone={() => setStage('result')} />
       )}
-
       {stage === 'result' && (
         <ResultScreen
           key="result"
