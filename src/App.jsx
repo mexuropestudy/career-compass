@@ -547,6 +547,7 @@ function rankedSpecialties(userScores) {
 }
 
 function Character({ stage = 'start' }) {
+  const { isMobile } = useViewport()
   const stageBubble = {
     start: 'Тут не треба вгадувати. Просто обирай чесно.',
     intro: 'Зараз буде коротко і по ділу — без нудного тесту.',
@@ -556,18 +557,20 @@ function Character({ stage = 'start' }) {
     result: 'Ось що я бачу по тобі.',
   }
 
-  const bubblePosition = stage === 'result'
-    ? { right: 180, bottom: 150 }
-    : stage === 'scenes'
-      ? { right: 190, bottom: 138 }
-      : { right: 188, bottom: 128 }
+  const bubblePosition = isMobile
+    ? { right: 88, bottom: stage === 'result' ? 120 : 108 }
+    : stage === 'result'
+      ? { right: 180, bottom: 150 }
+      : stage === 'scenes'
+        ? { right: 190, bottom: 138 }
+        : { right: 188, bottom: 128 }
 
   return (
     <motion.div
       initial={{ x: 18, opacity: 0 }}
       animate={{ x: [0, -4, 0], y: [0, -6, 0], opacity: 1 }}
       transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-      style={{ position: 'fixed', right: 20, bottom: 14, zIndex: 30, pointerEvents: 'none' }}
+      style={{ position: 'fixed', right: isMobile ? 10 : 20, bottom: isMobile ? 10 : 14, zIndex: 30, pointerEvents: 'none' }}
     >
       <motion.div
         key={stage}
@@ -577,22 +580,22 @@ function Character({ stage = 'start' }) {
         style={{
           position: 'absolute',
           ...bubblePosition,
-          width: 260,
+          width: isMobile ? 168 : 260,
           background: '#fff',
           border: `1px solid ${BRAND.line}`,
           borderRadius: 18,
-          padding: '12px 14px',
+          padding: isMobile ? '10px 12px' : '12px 14px',
           boxShadow: '0 14px 30px rgba(15,59,111,0.10)',
           color: BRAND.blueText,
-          fontSize: 14,
-          lineHeight: 1.45,
+          fontSize: isMobile ? 12 : 14,
+          lineHeight: 1.35,
         }}
       >
         {stageBubble[stage] || 'Йдемо далі.'}
       </motion.div>
 
       <div style={{ filter: 'drop-shadow(0 16px 30px rgba(15,59,111,0.14))' }}>
-        <svg width="170" height="188" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={isMobile ? '112' : '170'} height={isMobile ? '124' : '188'} viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="80" cy="68" r="34" fill={BRAND.soft} stroke={BRAND.navy} strokeWidth="4" />
           <circle cx="68" cy="65" r="3.5" fill={BRAND.navyDark} />
           <circle cx="92" cy="65" r="3.5" fill={BRAND.navyDark} />
@@ -610,15 +613,8 @@ function Character({ stage = 'start' }) {
 
 function LogoMark() {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 16 }}>
-      <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="48" cy="48" r="43" stroke={BRAND.navy} strokeWidth="6" fill="white" />
-        <path d="M18 31L48 20L78 31L48 42L18 31Z" fill={BRAND.navy} />
-        <path d="M30 31V48C35 43.5 41.5 41.5 48 41.5C54.5 41.5 61 43.5 66 48V31" fill={BRAND.navy} />
-        <path d="M77 31V54" stroke={BRAND.navy} strokeWidth="3.5" strokeLinecap="round" />
-        <circle cx="77" cy="57" r="3" fill={BRAND.navy} />
-        <path d="M17 67C22 55 33 48.5 48 48.5C63 48.5 74 55 79 67" stroke={BRAND.navy} strokeWidth="5" strokeLinecap="round" />
-      </svg>
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
+      <img src="/logo-max-europe-study.png" alt="MAX Europe Study" style={{ width: 86, height: 86, objectFit: 'contain', display: 'block' }} />
       <div style={{ lineHeight: 1.02 }}>
         <div style={{ fontSize: 34, fontWeight: 800, color: '#000', letterSpacing: '0.01em' }}>MAX</div>
         <div style={{ fontSize: 30, fontWeight: 400, color: '#000' }}>Europe Study</div>
@@ -638,39 +634,41 @@ function Shell({ children, stage = 'start' }) {
 }
 
 function StartScreen({ onStart }) {
+  const { width, isMobile, isTablet } = useViewport()
+
   return (
     <Shell stage="start">
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '40px 24px' }}>
-        <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'grid', gridTemplateColumns: 'minmax(0, 1.15fr) minmax(360px, 0.85fr)', gap: 36, alignItems: 'center' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: isMobile ? '20px 14px 110px' : '40px 24px' }}>
+        <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile || isTablet ? '1fr' : 'minmax(0, 1.15fr) minmax(360px, 0.85fr)', gap: isMobile ? 18 : 36, alignItems: 'start' }}>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
             <div style={{ marginBottom: 14 }}><LogoMark /></div>
-            <h1 style={{ fontSize: 'clamp(34px, 5.2vw, 58px)', lineHeight: 1.08, margin: '20px 0 14px', fontWeight: 800, color: BRAND.navyDark, maxWidth: 760 }}>
+            <h1 style={{ fontSize: isMobile ? 36 : 'clamp(34px, 5.2vw, 58px)', lineHeight: 1.08, margin: '16px 0 12px', fontWeight: 800, color: BRAND.navyDark, maxWidth: 760 }}>
               Кар’єрний компас
             </h1>
-            <p style={{ fontSize: 21, lineHeight: 1.6, color: BRAND.blueText, margin: '0 0 24px', maxWidth: 760, textAlign: 'left' }}>
+            <p style={{ fontSize: isMobile ? 18 : 21, lineHeight: 1.6, color: BRAND.blueText, margin: '0 0 18px', maxWidth: 760, textAlign: 'left' }}>
               Це коротка, жива діагностика для тих, хто не хоче вибирати навмання. Вона допоможе краще зрозуміти себе, побачити сильні сторони і напрями, які справді можуть підійти.
             </p>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, auto)', gap: 10, marginBottom: 22 }}>
               {['Свій кар’єрний код', 'Напрями з відсотками співпадіння', 'Анти-напрями без тиску', 'Сценарій «Майбутнє Я»'].map((item) => (
-                <span key={item} style={{ borderRadius: 999, background: '#fff', padding: '10px 14px', fontSize: 14, border: `1px solid ${BRAND.line}`, color: BRAND.blueText }}>{item}</span>
+                <span key={item} style={{ borderRadius: 18, background: '#fff', padding: isMobile ? '10px 12px' : '10px 14px', fontSize: isMobile ? 13 : 14, lineHeight: 1.35, border: `1px solid ${BRAND.line}`, color: BRAND.blueText }}>{item}</span>
               ))}
             </div>
-            <button onClick={onStart} style={{ border: 'none', borderRadius: 18, padding: '16px 28px', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', background: 'linear-gradient(135deg, #0f3b6f, #1b5da0)', boxShadow: '0 16px 32px rgba(15,59,111,0.20)' }}>
+            <button onClick={onStart} style={{ border: 'none', borderRadius: 18, padding: isMobile ? '15px 22px' : '16px 28px', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', background: 'linear-gradient(135deg, #0f3b6f, #1b5da0)', boxShadow: '0 16px 32px rgba(15,59,111,0.20)', width: isMobile ? '100%' : 'auto' }}>
               Почати
             </button>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 30, padding: 30, boxShadow: '0 18px 48px rgba(15,59,111,0.10)', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: -14, right: 18, borderRadius: 999, padding: '9px 14px', fontSize: 14, color: '#fff', background: BRAND.navy }}>
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 28, padding: isMobile ? 18 : 30, boxShadow: '0 18px 48px rgba(15,59,111,0.10)', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: -12, right: 14, borderRadius: 999, padding: isMobile ? '8px 12px' : '9px 14px', fontSize: isMobile ? 13 : 14, color: '#fff', background: BRAND.navy }}>
               8–11 клас
             </div>
-            <div style={{ display: 'grid', gap: 14, lineHeight: 1.6, fontSize: 18, color: BRAND.text, textAlign: 'left' }}>
+            <div style={{ display: 'grid', gap: 14, lineHeight: 1.6, fontSize: isMobile ? 16 : 18, color: BRAND.text, textAlign: 'left' }}>
               <p style={{ margin: 0 }}>Для тебе, якщо не знаєш, ким хочеш бути.</p>
               <p style={{ margin: 0 }}>Для тебе, якщо в голові вже є кілька варіантів, але вибрати один складно.</p>
               <p style={{ margin: 0 }}>Для тебе, якщо не хочеш вибирати навмання і хочеш краще зрозуміти себе без тиску.</p>
             </div>
-            <div style={{ marginTop: 20, borderRadius: 18, padding: 16, background: BRAND.soft }}>
-              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: BRAND.blueText, textAlign: 'left' }}>
+            <div style={{ marginTop: 18, borderRadius: 18, padding: isMobile ? 14 : 16, background: BRAND.soft }}>
+              <p style={{ margin: 0, fontSize: isMobile ? 14 : 15, lineHeight: 1.6, color: BRAND.blueText, textAlign: 'left' }}>
                 Наприкінці ти побачиш свій кар’єрний код, напрями з відсотками співпадіння, напрями, де буде складніше, і сценарій твого «Майбутнього Я».
               </p>
             </div>
@@ -703,16 +701,17 @@ function IntroScreen({ onNext }) {
 }
 
 function OnboardingScreen({ onSubmit }) {
+  const { isMobile } = useViewport()
   const [form, setForm] = useState({ grade: '', difficulty: '', priority: '' })
   const ready = form.grade && form.difficulty && form.priority
 
   return (
     <Shell stage="onboarding">
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '40px 24px' }}>
-        <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} style={{ maxWidth: 920, width: '100%', margin: '0 auto', background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 32, padding: 32, boxShadow: '0 18px 48px rgba(15,59,111,0.10)' }}>
-          <h2 style={{ fontSize: 42, margin: '0 0 10px', color: BRAND.navyDark }}>Налаштуємо компас під тебе</h2>
-          <p style={{ color: BRAND.blueText, fontSize: 18, margin: '0 0 28px' }}>Кілька коротких запитань — і далі підемо в сам квест.</p>
-          <div style={{ display: 'grid', gap: 30 }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: isMobile ? '20px 14px 110px' : '40px 24px' }}>
+        <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} style={{ maxWidth: 920, width: '100%', margin: '0 auto', background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 28, padding: isMobile ? 18 : 32, boxShadow: '0 18px 48px rgba(15,59,111,0.10)' }}>
+          <h2 style={{ fontSize: isMobile ? 34 : 42, margin: '0 0 10px', color: BRAND.navyDark, lineHeight: 1.08 }}>Налаштуємо компас під тебе</h2>
+          <p style={{ color: BRAND.blueText, fontSize: isMobile ? 17 : 18, margin: '0 0 24px' }}>Кілька коротких запитань — і далі підемо в сам квест.</p>
+          <div style={{ display: 'grid', gap: 24 }}>
             <QuestionBlock title="У якому ти класі?">
               <ChoiceGrid items={['8', '9', '10', '11', 'вже закінчив(ла)']} value={form.grade} onPick={(item) => setForm((s) => ({ ...s, grade: item }))} />
             </QuestionBlock>
@@ -720,10 +719,10 @@ function OnboardingScreen({ onSubmit }) {
               <ChoiceStack items={['Я взагалі не розумію, ким бути', 'Є варіанти, але не можу вибрати', 'Боюся зробити неправильний вибір', 'Не розумію, в чому я сильний(а)', 'На мене тиснуть з вибором']} value={form.difficulty} onPick={(item) => setForm((s) => ({ ...s, difficulty: item }))} />
             </QuestionBlock>
             <QuestionBlock title="Якби можна було обрати ідеально, що для тебе важливо?">
-              <ChoiceStack items={['Щоб було цікаво', 'Щоб приносило гроші', 'Щоб було стабільно', 'Щоб була свобода', 'Щоб можна було жити/вчитись за кордоном', 'Щоб це мало сенс']} value={form.priority} onPick={(item) => setForm((s) => ({ ...s, priority: item }))} />
+              <ChoiceStack items={['Щоб було цікаво', 'Щоб приносило гроші', 'Щоб було стабільно', 'Щоб була свобода', 'Щоб можна було вчитись за кордоном', 'Щоб це мало сенс']} value={form.priority} onPick={(item) => setForm((s) => ({ ...s, priority: item }))} />
             </QuestionBlock>
           </div>
-          <button disabled={!ready} onClick={() => onSubmit(form)} style={{ marginTop: 28, border: 'none', borderRadius: 18, padding: '16px 28px', fontSize: 18, fontWeight: 700, color: '#fff', cursor: ready ? 'pointer' : 'not-allowed', background: ready ? 'linear-gradient(135deg, #0f3b6f, #1b5da0)' : '#cbd5e1' }}>
+          <button disabled={!ready} onClick={() => onSubmit(form)} style={{ marginTop: 24, border: 'none', borderRadius: 18, padding: isMobile ? '15px 22px' : '16px 28px', fontSize: 18, fontWeight: 700, color: '#fff', cursor: ready ? 'pointer' : 'not-allowed', background: ready ? 'linear-gradient(135deg, #0f3b6f, #1b5da0)' : '#cbd5e1', width: isMobile ? '100%' : 'auto' }}>
             Далі
           </button>
         </motion.div>
@@ -742,8 +741,9 @@ function QuestionBlock({ title, children }) {
 }
 
 function ChoiceGrid({ items, value, onPick }) {
+  const { isMobile } = useViewport()
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 10 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))', gap: 10 }}>
       {items.map((item) => <SelectButton key={item} active={value === item} onClick={() => onPick(item)}>{item}</SelectButton>)}
     </div>
   )
@@ -758,8 +758,9 @@ function ChoiceStack({ items, value, onPick }) {
 }
 
 function SelectButton({ active, onClick, children }) {
+  const { isMobile } = useViewport()
   return (
-    <button onClick={onClick} style={{ border: `1px solid ${BRAND.line}`, borderRadius: 18, padding: '16px 18px', cursor: 'pointer', fontSize: 16, lineHeight: 1.45, transition: 'all 0.2s ease', background: active ? BRAND.navy : '#fff', color: active ? '#fff' : BRAND.text, textAlign: 'left' }}>
+    <button onClick={onClick} style={{ border: `1px solid ${BRAND.line}`, borderRadius: 18, padding: isMobile ? '14px 14px' : '16px 18px', cursor: 'pointer', fontSize: isMobile ? 15 : 16, lineHeight: 1.45, transition: 'all 0.2s ease', background: active ? BRAND.navy : '#fff', color: active ? '#fff' : BRAND.text, textAlign: 'left', minHeight: isMobile ? 64 : 'auto', wordBreak: 'break-word' }}>
       {children}
     </button>
   )
@@ -781,21 +782,22 @@ function Progress({ current, total }) {
 }
 
 function SceneScreen({ scene, index, total, onAnswer }) {
+  const { isMobile } = useViewport()
   return (
     <Shell stage="scenes">
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '36px 24px' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: isMobile ? '18px 14px 110px' : '36px 24px' }}>
         <div style={{ width: '100%', maxWidth: 1120, margin: '0 auto' }}>
           <Progress current={index + 1} total={total} />
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 32, boxShadow: '0 18px 48px rgba(15,59,111,0.10)', marginTop: 22, padding: 34, textAlign: 'left' }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.18, margin: '0 0 14px', color: BRAND.navyDark, textAlign: 'left' }}>
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 28, boxShadow: '0 18px 48px rgba(15,59,111,0.10)', marginTop: 18, padding: isMobile ? 18 : 34, textAlign: 'left' }}>
+            <h2 style={{ fontSize: isMobile ? 24 : 'clamp(28px, 4vw, 52px)', lineHeight: 1.2, margin: '0 0 12px', color: BRAND.navyDark, textAlign: 'left', wordBreak: 'break-word' }}>
               {scene.text}
             </h2>
-            <p style={{ fontSize: 16, margin: '0 0 24px', color: BRAND.blueText, lineHeight: 1.55, textAlign: 'left' }}>
+            <p style={{ fontSize: isMobile ? 15 : 16, margin: '0 0 18px', color: BRAND.blueText, lineHeight: 1.55, textAlign: 'left' }}>
               Обирай не ту відповідь, яка звучить правильно, а ту, яка реально найбільше схожа на тебе.
             </p>
-            <div style={{ display: 'grid', gap: 12 }}>
+            <div style={{ display: 'grid', gap: 10 }}>
               {scene.options.map((option, i) => (
-                <motion.button key={option.text} onClick={() => onAnswer(option)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} style={{ border: `1px solid ${BRAND.line}`, borderRadius: 20, padding: '18px 20px', textAlign: 'left', background: '#fff', color: BRAND.text, fontSize: 18, cursor: 'pointer' }}>
+                <motion.button key={option.text} onClick={() => onAnswer(option)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} style={{ border: `1px solid ${BRAND.line}`, borderRadius: 18, padding: isMobile ? '16px 14px' : '18px 20px', textAlign: 'left', background: '#fff', color: BRAND.text, fontSize: isMobile ? 16 : 18, cursor: 'pointer', lineHeight: 1.45, wordBreak: 'break-word' }}>
                   {option.text}
                 </motion.button>
               ))}
@@ -842,9 +844,10 @@ function ScoreBox({ label, value }) {
 }
 
 function InfoCard({ title, children }) {
+  const { isMobile } = useViewport()
   return (
-    <section style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 30, padding: 28, boxShadow: '0 14px 36px rgba(15,59,111,0.08)' }}>
-      <h2 style={{ fontSize: 30, margin: '0 0 18px', color: BRAND.navyDark, lineHeight: 1.15 }}>{title}</h2>
+    <section style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 24, padding: isMobile ? 18 : 28, boxShadow: '0 14px 36px rgba(15,59,111,0.08)', minWidth: 0 }}>
+      <h2 style={{ fontSize: isMobile ? 22 : 30, margin: '0 0 16px', color: BRAND.navyDark, lineHeight: 1.15, wordBreak: 'break-word' }}>{title}</h2>
       {children}
     </section>
   )
@@ -889,18 +892,19 @@ function groupSpecialties(items) {
 }
 
 function SpecialityBlock({ ranked }) {
+  const { isMobile } = useViewport()
   const grouped = groupSpecialties(ranked)
   const top = grouped.slice(0, 5)
   const anti = grouped.slice(-5).reverse()
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 28 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 20 }}>
       <InfoCard title="Які напрями тобі підходять найбільше">
         <div style={{ display: 'grid', gap: 12 }}>
           {top.map((item, index) => (
-            <div key={item.label} style={{ display: 'grid', gridTemplateColumns: '32px minmax(0,1fr) auto', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: index < 3 ? BRAND.softGreen : '#fff' }}>
-              <div style={{ width: 32, height: 32, borderRadius: 999, background: '#fff', border: `1px solid ${BRAND.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: BRAND.navy, fontWeight: 700 }}>{index + 1}</div>
-              <span style={{ color: BRAND.text, fontSize: 17, lineHeight: 1.35 }}>{item.label}</span>
-              <strong style={{ color: BRAND.navy, fontSize: 18 }}>{item.percent}%</strong>
+            <div key={item.label} style={{ display: 'grid', gridTemplateColumns: '28px minmax(0,1fr) auto', alignItems: 'center', gap: 12, padding: isMobile ? '12px 12px' : '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: index < 3 ? BRAND.softGreen : '#fff', minWidth: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 999, background: '#fff', border: `1px solid ${BRAND.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: BRAND.navy, fontWeight: 700 }}>{index + 1}</div>
+              <span style={{ color: BRAND.text, fontSize: isMobile ? 15 : 17, lineHeight: 1.35, wordBreak: 'break-word' }}>{item.label}</span>
+              <strong style={{ color: BRAND.navy, fontSize: isMobile ? 16 : 18 }}>{item.percent}%</strong>
             </div>
           ))}
         </div>
@@ -909,42 +913,43 @@ function SpecialityBlock({ ranked }) {
       <InfoCard title="Напрями, де тобі буде складніше">
         <div style={{ display: 'grid', gap: 12, marginBottom: 16 }}>
           {anti.map((item) => (
-            <div key={item.label} style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', alignItems: 'center', gap: 16, padding: '14px 16px', borderRadius: 18, border: '1px solid #f2caca', background: BRAND.softRed }}>
-              <span style={{ color: BRAND.text, fontSize: 17, lineHeight: 1.35 }}>{item.label}</span>
-              <strong style={{ color: '#a94442', fontSize: 18 }}>{item.percent}%</strong>
+            <div key={item.label} style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', alignItems: 'center', gap: 12, padding: isMobile ? '12px 12px' : '14px 16px', borderRadius: 18, border: '1px solid #f2caca', background: BRAND.softRed, minWidth: 0 }}>
+              <span style={{ color: BRAND.text, fontSize: isMobile ? 15 : 17, lineHeight: 1.35, wordBreak: 'break-word' }}>{item.label}</span>
+              <strong style={{ color: '#a94442', fontSize: isMobile ? 16 : 18 }}>{item.percent}%</strong>
             </div>
           ))}
         </div>
-        <p style={{ margin: 0, color: BRAND.blueText, lineHeight: 1.7, fontSize: 17, textAlign: 'left' }}>{DISCLAIMER}</p>
+        <p style={{ margin: 0, color: BRAND.blueText, lineHeight: 1.7, fontSize: isMobile ? 15 : 17, textAlign: 'left' }}>{DISCLAIMER}</p>
       </InfoCard>
     </div>
   )
 }
 
 function ResultScreen({ profileCode, scores, profile, ranked, onRestart }) {
+  const { isMobile } = useViewport()
   return (
     <Shell stage="result">
-      <div style={{ padding: '36px 24px 70px' }}>
-        <div style={{ width: '100%', maxWidth: 1180, margin: '0 auto', display: 'grid', gap: 24 }}>
-          <section style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 32, padding: 30, boxShadow: '0 18px 48px rgba(15,59,111,0.10)' }}>
-            <h1 style={{ fontSize: 'clamp(34px, 5vw, 60px)', margin: '0 0 14px', lineHeight: 1.08, color: BRAND.navyDark }}>
+      <div style={{ padding: isMobile ? '18px 14px 110px' : '36px 24px 70px' }}>
+        <div style={{ width: '100%', maxWidth: 1180, margin: '0 auto', display: 'grid', gap: 20 }}>
+          <section style={{ background: '#fff', border: `1px solid ${BRAND.line}`, borderRadius: 28, padding: isMobile ? 18 : 30, boxShadow: '0 18px 48px rgba(15,59,111,0.10)' }}>
+            <h1 style={{ fontSize: isMobile ? 28 : 'clamp(34px, 5vw, 60px)', margin: '0 0 14px', lineHeight: 1.08, color: BRAND.navyDark, wordBreak: 'break-word' }}>
               Твій кар’єрний код — {profileCode}
             </h1>
-            <p style={{ fontSize: 18, color: BRAND.blueText, lineHeight: 1.6, margin: '0 0 10px', textAlign: 'left' }}>
+            <p style={{ fontSize: isMobile ? 16 : 18, color: BRAND.blueText, lineHeight: 1.6, margin: '0 0 10px', textAlign: 'left' }}>
               Це не ярлик і не вирок. Це твій поточний патерн: як ти думаєш, дієш і в якому середовищі розкриваєшся сильніше.
             </p>
-            <p style={{ fontSize: 21, color: BRAND.text, lineHeight: 1.6, margin: '0 0 22px', textAlign: 'left', fontWeight: 600 }}>{profile.label}</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 12 }}>
+            <p style={{ fontSize: isMobile ? 18 : 21, color: BRAND.text, lineHeight: 1.6, margin: '0 0 18px', textAlign: 'left', fontWeight: 600 }}>{profile.label}</p>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(6, minmax(0, 1fr))', gap: 10 }}>
               {TYPES.map((type) => <ScoreBox key={type} label={type} value={scores[type]} />)}
             </div>
           </section>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 20 }}>
             <InfoCard title="Хто ти">
-              <p style={{ margin: 0, color: BRAND.text, lineHeight: 1.7, fontSize: 18, textAlign: 'left' }}>{profile.who}</p>
+              <p style={{ margin: 0, color: BRAND.text, lineHeight: 1.7, fontSize: isMobile ? 16 : 18, textAlign: 'left' }}>{profile.who}</p>
             </InfoCard>
             <InfoCard title="Де ти сильний(а)">
-              <ul style={{ margin: 0, paddingLeft: 22, color: BRAND.text, lineHeight: 1.9, fontSize: 18, textAlign: 'left' }}>
+              <ul style={{ margin: 0, paddingLeft: 22, color: BRAND.text, lineHeight: 1.8, fontSize: isMobile ? 16 : 18, textAlign: 'left' }}>
                 {profile.strengths.map((item) => <li key={item}>{item}</li>)}
               </ul>
             </InfoCard>
@@ -952,31 +957,31 @@ function ResultScreen({ profileCode, scores, profile, ranked, onRestart }) {
 
           <SpecialityBlock ranked={ranked} />
 
-          <section style={{ borderRadius: 30, padding: 28, color: '#fff', background: 'linear-gradient(135deg, #0b2c54, #0f3b6f)', boxShadow: '0 18px 48px rgba(15,59,111,0.20)' }}>
-            <h2 style={{ fontSize: 30, margin: '0 0 16px' }}>Сценарій «Майбутнє Я»</h2>
-            <p style={{ margin: 0, color: '#eaf2fb', lineHeight: 1.85, fontSize: 19, textAlign: 'left' }}>{profile.future}</p>
+          <section style={{ borderRadius: 24, padding: isMobile ? 18 : 28, color: '#fff', background: 'linear-gradient(135deg, #0b2c54, #0f3b6f)', boxShadow: '0 18px 48px rgba(15,59,111,0.20)' }}>
+            <h2 style={{ fontSize: isMobile ? 22 : 30, margin: '0 0 16px' }}>Сценарій «Майбутнє Я»</h2>
+            <p style={{ margin: 0, color: '#eaf2fb', lineHeight: 1.75, fontSize: isMobile ? 16 : 19, textAlign: 'left' }}>{profile.future}</p>
           </section>
 
           <InfoCard title="Що можна зробити вже зараз">
-            <p style={{ margin: '0 0 14px', color: BRAND.blueText, fontSize: 17, textAlign: 'left' }}>Ось кілька кроків, які допоможуть перевірити результат не тільки в теорії, а й у реальному житті.</p>
+            <p style={{ margin: '0 0 14px', color: BRAND.blueText, fontSize: isMobile ? 15 : 17, textAlign: 'left' }}>Ось кілька кроків, які допоможуть перевірити результат не тільки в теорії, а й у реальному житті.</p>
             <div style={{ display: 'grid', gap: 12 }}>
-              <div style={{ padding: '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: BRAND.soft }}>
+              <div style={{ padding: isMobile ? '12px 12px' : '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: BRAND.soft }}>
                 <strong style={{ display: 'block', marginBottom: 6, color: BRAND.navyDark }}>1. Подивись на реальних людей</strong>
-                <span style={{ color: BRAND.text, lineHeight: 1.6 }}>Знайди 2–3 блоги, відео або інтерв’ю людей із напрямів, які потрапили в твій топ.</span>
+                <span style={{ color: BRAND.text, lineHeight: 1.6, fontSize: isMobile ? 15 : 16 }}>Знайди 2–3 блоги, відео або інтерв’ю людей із напрямів, які потрапили в твій топ.</span>
               </div>
-              <div style={{ padding: '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: '#fff' }}>
+              <div style={{ padding: isMobile ? '12px 12px' : '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: '#fff' }}>
                 <strong style={{ display: 'block', marginBottom: 6, color: BRAND.navyDark }}>2. Спробуй маленьку практику</strong>
-                <span style={{ color: BRAND.text, lineHeight: 1.6 }}>Зроби одне маленьке завдання зі спеціальності, яка тебе зачепила найбільше.</span>
+                <span style={{ color: BRAND.text, lineHeight: 1.6, fontSize: isMobile ? 15 : 16 }}>Зроби одне маленьке завдання зі спеціальності, яка тебе зачепила найбільше.</span>
               </div>
-              <div style={{ padding: '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: '#fff' }}>
+              <div style={{ padding: isMobile ? '12px 12px' : '14px 16px', borderRadius: 18, border: `1px solid ${BRAND.line}`, background: '#fff' }}>
                 <strong style={{ display: 'block', marginBottom: 6, color: BRAND.navyDark }}>3. Відслідкуй відчуття</strong>
-                <span style={{ color: BRAND.text, lineHeight: 1.6 }}>Подумай чесно: що тебе реально захопило, а що швидко забрало енергію.</span>
+                <span style={{ color: BRAND.text, lineHeight: 1.6, fontSize: isMobile ? 15 : 16 }}>Подумай чесно: що тебе реально захопило, а що швидко забрало енергію.</span>
               </div>
             </div>
           </InfoCard>
 
           <section style={{ textAlign: 'center', paddingTop: 8 }}>
-            <button onClick={onRestart} style={{ border: 'none', borderRadius: 18, padding: '16px 26px', color: '#fff', fontSize: 18, fontWeight: 700, background: BRAND.navy, cursor: 'pointer' }}>
+            <button onClick={onRestart} style={{ border: 'none', borderRadius: 18, padding: isMobile ? '15px 22px' : '16px 26px', color: '#fff', fontSize: 18, fontWeight: 700, background: BRAND.navy, cursor: 'pointer', width: isMobile ? '100%' : 'auto' }}>
               Пройти ще раз
             </button>
           </section>
@@ -1022,4 +1027,5 @@ export default function App() {
     </AnimatePresence>
   )
 }
+
 
